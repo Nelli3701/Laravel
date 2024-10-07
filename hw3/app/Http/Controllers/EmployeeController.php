@@ -8,25 +8,38 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    protected $names = [
-        'John',
-        'Jane'
-    ];
-    protected $surnames = [
-        'Doe',
-        'Smith'
-    ];
-    protected $emails = [
-        'john.doe@example.com',
-        'jane.smith@example.com'
+    protected $employeesData = [
+        [
+            'name' => 'John',
+            'surname' => 'Doe',
+            'email' => 'john.doe@example.com',
+        ],
+        [
+            'name' => 'Jane',
+            'surname' => 'Smith',
+            'email' => 'jane.smith@example.com',
+        ],
     ];
 
     public function __invoke()
-    {
-        $employee = new Employee();
-        $employee->name = $this->names[rand(0, count($this->names) - 1)];
-        $employee->surname = $this->surnames[rand(0, count($this->surnames) - 1)];
-        $employee->email = $this->emails[rand(0, count($this->emails) - 1)];
-        $employee->save();
+    { {
+            // Проверка, существуют ли уже сотрудники в базе данных
+            if (Employee::count() === 0) {
+                // Создаем сотрудников, если их еще нет
+                foreach ($this->employeesData as $data) {
+                    $employee = new Employee();
+                    $employee->name = $data['name'];
+                    $employee->surname = $data['surname'];
+                    $employee->email = $data['email'];
+                    $employee->save();
+                }
+            }
+
+            // Получение всех сотрудников из базы данных
+            $employees = Employee::all();
+
+            // Возврат представления с передачей всех сотрудников
+            return view('employees', compact('employees'));
+        }
     }
 }

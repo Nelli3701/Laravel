@@ -1,0 +1,1 @@
+<p>2024(c)</p><?php /**PATH D:\Виктория\Курсы\Laravel\hw4\resources\views/includes/footer.blade.php ENDPATH**/ ?>
